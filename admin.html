@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم | AL SULTAN ADMIN</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Admin dashboard for AL SULTAN MEDICAL CATALOG">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body data-view="login" data-theme="dark">
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-brand">
+        <img src="assets/logos/logo.png" alt="" class="login-brand__logo" aria-hidden="true">
+        <h1>لوحة التحكم</h1>
+        <p>AL SULTAN TRADING COMPANY</p>
+      </div>
+      <form class="login-form" id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">اسم المستخدم</label>
+          <input type="text" id="loginEmail" placeholder="Administrator" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">كلمة المرور</label>
+          <div class="form-group__password">
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="login-error" id="loginError" hidden>بيانات الدخول غير صحيحة</div>
+        <button type="submit" class="btn btn--accent btn--lg btn--full" id="loginBtn">تسجيل الدخول</button>
+      </form>
+      <a href="index.html" class="login-back">العودة إلى الكتالوج ←</a>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN SHELL ===== -->
+  <div class="admin-shell" id="adminShell" hidden>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Admin navigation">
+      <div class="sidebar__brand">
+        <img src="assets/logos/logo.png" alt="" class="sidebar__brand-logo" aria-hidden="true">
+        <div class="sidebar__brand-text">
+          <span>AL SULTAN</span>
+          <small>Admin Panel</small>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <button class="sidebar__link active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>لوحة التحكم</span>
+        </button>
+        <button class="sidebar__link" data-view="products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span>المنتجات</span>
+        </button>
+        <button class="sidebar__link" data-view="add-product">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          <span>إضافة منتج</span>
+        </button>
+        <button class="sidebar__link" data-view="categories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          <span>التصنيفات</span>
+        </button>
+        <button class="sidebar__link" data-view="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>الإعدادات</span>
+        </button>
+      </nav>
+      <div class="sidebar__footer">
+        <a href="index.html" class="sidebar__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span>عرض الكتالوج</span>
+        </a>
+        <button class="sidebar__link sidebar__logout" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>تسجيل الخروج</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="topbar__menu" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar__title" id="topbarTitle">لوحة التحكم</div>
+        <div class="topbar__actions">
+          <button class="topbar__btn" id="themeToggle" aria-label="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="topbar__btn" id="langToggle" aria-label="Switch language">
+            <span class="lang-label">EN</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Views -->
+      <div class="content-area" id="contentArea">
+
+        <!-- ===== DASHBOARD VIEW ===== -->
+        <section class="view active" id="viewDashboard" data-view="dashboard">
+          <h2 class="view__heading">لوحة التحكم</h2>
+
+          <!-- Stats Cards -->
+          <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--products">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div class="stat-card__info">
+                <span class="stat-card__number" id="statTotalProducts">0</span>
+                <span class="stat-card__label">إجمالي المنتجات</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--featured">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="stat-card__info">
+                <span class="stat-card__number" id="statFeaturedProducts">0</span>
+                <span class="stat-card__label">منتجات مميزة</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--categories">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+              </div>
+              <div class="stat-card__info">
+                <span class="stat-card__number" id="statCategories">0</span>
+                <span class="stat-card__label">التصنيفات</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__icon stat-card__icon--updated">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="stat-card__info">
+                <span class="stat-card__number stat-card__number--sm" id="statLastUpdate">—</span>
+                <span class="stat-card__label">آخر تحديث</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Products Table -->
+          <div class="panel">
+            <div class="panel__header">
+              <h3>أحدث المنتجات</h3>
+              <button class="btn btn--accent btn--sm" data-view="products">عرض الكل</button>
+            </div>
+            <div class="table-wrap">
+              <table class="table" id="dashboardTable">
+                <thead>
+                  <tr>
+                    <th>المنتج</th>
+                    <th>التصنيف</th>
+                    <th>العلامة</th>
+                    <th>SKU</th>
+                    <th>مميز</th>
+                    <th>إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== PRODUCTS VIEW ===== -->
+        <section class="view" id="viewProducts" data-view="products" hidden>
+          <div class="view__header">
+            <h2 class="view__heading">المنتجات</h2>
+            <button class="btn btn--accent" data-view="add-product">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              إضافة منتج
+            </button>
+          </div>
+          <div class="products-toolbar">
+            <input type="search" class="input" id="adminSearchInput" placeholder="بحث..." aria-label="Search products">
+            <select class="select" id="adminCategoryFilter" aria-label="Filter category">
+              <option value="all">جميع التصنيفات</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table class="table" id="productsTable">
+              <thead>
+                <tr>
+                  <th>الصورة</th>
+                  <th>المنتج</th>
+                  <th>التصنيف</th>
+                  <th>العلامة</th>
+                  <th>SKU</th>
+                  <th>الحالة</th>
+                  <th>ترتيب</th>
+                  <th>مميز</th>
+                  <th>إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="productsEmpty" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            <p>لا توجد منتجات</p>
+            <button class="btn btn--accent" data-view="add-product">إضافة أول منتج</button>
+          </div>
+        </section>
+
+        <!-- ===== ADD / EDIT PRODUCT VIEW ===== -->
+        <section class="view" id="viewAddProduct" data-view="add-product" hidden>
+          <div class="view__header">
+            <h2 class="view__heading" id="productFormTitle">إضافة منتج جديد</h2>
+            <button class="btn btn--ghost" data-view="products">العودة للمنتجات</button>
+          </div>
+          <form class="product-form" id="productForm" novalidate>
+            <input type="hidden" id="formProductId">
+
+            <!-- Image Upload -->
+            <div class="form-section">
+              <h3 class="form-section__title">صورة المنتج</h3>
+              <div class="image-upload" id="imageUpload">
+                <div class="image-upload__preview" id="imagePreview">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span>اسحب الصورة هنا أو اضغط للاختيار</span>
+                </div>
+                <input type="file" id="imageFileInput" accept="image/*" hidden>
+                <div class="image-upload__actions" id="imageActions" hidden>
+                  <button type="button" class="btn btn--ghost btn--sm" id="imageReplace">استبدال الصورة</button>
+                  <button type="button" class="btn btn--danger btn--sm" id="imageRemove">حذف الصورة</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Basic Info -->
+            <div class="form-section">
+              <h3 class="form-section__title">المعلومات الأساسية</h3>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formNameAr">اسم المنتج (عربي) *</label>
+                  <input type="text" id="formNameAr" required data-i18n-placeholder="form_name_ar_ph">
+                </div>
+                <div class="form-group">
+                  <label for="formNameEn">اسم المنتج (إنجليزي) *</label>
+                  <input type="text" id="formNameEn" required>
+                </div>
+              </div>
+              <div class="form-grid form-grid--3col">
+                <div class="form-group">
+                  <label for="formCategory">التصنيف *</label>
+                  <select id="formCategory" class="select" required></select>
+                </div>
+                <div class="form-group">
+                  <label for="formBrand">العلامة التجارية</label>
+                  <input type="text" id="formBrand" value="OMEGA Technology">
+                </div>
+                <div class="form-group">
+                  <label for="formSku">رقم الصنف (SKU) *</label>
+                  <input type="text" id="formSku" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Descriptions -->
+            <div class="form-section">
+              <h3 class="form-section__title">الوصف</h3>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formDescAr">وصف مختصر (عربي) *</label>
+                  <textarea id="formDescAr" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="formDescEn">وصف مختصر (إنجليزي) *</label>
+                  <textarea id="formDescEn" rows="3" required></textarea>
+                </div>
+              </div>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formFullDescAr">وصف كامل (عربي)</label>
+                  <textarea id="formFullDescAr" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="formFullDescEn">وصف كامل (إنجليزي)</label>
+                  <textarea id="formFullDescEn" rows="4"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Features -->
+            <div class="form-section">
+              <h3 class="form-section__title">الميزات</h3>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formFeaturesAr">الميزات (عربي) — فاصلة بين كل ميزة</label>
+                  <textarea id="formFeaturesAr" rows="3" placeholder="ميزة 1, ميزة 2, ميزة 3"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="formFeaturesEn">الميزات (إنجليزي) — فاصلة بين كل ميزة</label>
+                  <textarea id="formFeaturesEn" rows="3" placeholder="Feature 1, Feature 2, Feature 3"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Specifications -->
+            <div class="form-section">
+              <h3 class="form-section__title">المواصفات</h3>
+              <div id="specsContainer"></div>
+              <button type="button" class="btn btn--ghost btn--sm" id="addSpecBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                إضافة مواصفة
+              </button>
+            </div>
+
+            <!-- Warranty & After Sales -->
+            <div class="form-section">
+              <h3 class="form-section__title">الضمان وخدمة ما بعد البيع</h3>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formWarrantyAr">الضمان (عربي)</label>
+                  <input type="text" id="formWarrantyAr">
+                </div>
+                <div class="form-group">
+                  <label for="formWarrantyEn">الضمان (إنجليزي)</label>
+                  <input type="text" id="formWarrantyEn">
+                </div>
+              </div>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formAfterSalesAr">خدمة ما بعد البيع (عربي)</label>
+                  <input type="text" id="formAfterSalesAr">
+                </div>
+                <div class="form-group">
+                  <label for="formAfterSalesEn">خدمة ما بعد البيع (إنجليزي)</label>
+                  <input type="text" id="formAfterSalesEn">
+                </div>
+              </div>
+            </div>
+
+            <!-- Keywords & Options -->
+            <div class="form-section">
+              <h3 class="form-section__title">خيارات إضافية</h3>
+              <div class="form-grid form-grid--2col">
+                <div class="form-group">
+                  <label for="formKeywords">الكلمات المفتاحية — فاصلة بين كل كلمة</label>
+                  <input type="text" id="formKeywords" placeholder="keyword1, keyword2, keyword3">
+                </div>
+                <div class="form-group">
+                  <label for="formDisplayOrder">ترتيب العرض</label>
+                  <input type="number" id="formDisplayOrder" min="0" value="0">
+                </div>
+              </div>
+              <div class="form-row">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="formFeatured">
+                  <span>منتج مميز</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <button type="button" class="btn btn--ghost" data-view="products">إلغاء</button>
+              <button type="button" class="btn btn--outline" id="previewProductBtn">معاينة</button>
+              <button type="submit" class="btn btn--accent btn--lg" id="saveProductBtn">حفظ المنتج</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ===== CATEGORIES VIEW ===== -->
+        <section class="view" id="viewCategories" data-view="categories" hidden>
+          <div class="view__header">
+            <h2 class="view__heading">التصنيفات</h2>
+          </div>
+          <div class="categories-grid" id="adminCategoriesGrid"></div>
+        </section>
+
+        <!-- ===== SETTINGS VIEW ===== -->
+        <section class="view" id="viewSettings" data-view="settings" hidden>
+          <h2 class="view__heading">الإعدادات</h2>
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>معلومات الكتالوج</h3>
+              <div class="form-group">
+                <label for="settingCompanyName">اسم الشركة</label>
+                <input type="text" id="settingCompanyName" class="input" value="شركة السلطان التجارية">
+              </div>
+              <div class="form-group">
+                <label for="settingCompanyEn">Company Name (EN)</label>
+                <input type="text" id="settingCompanyEn" class="input" value="AL SULTAN TRADING COMPANY">
+              </div>
+              <div class="form-group">
+                <label for="settingWhatsApp">رقم WhatsApp</label>
+                <input type="text" id="settingWhatsApp" class="input" value="963994683406" dir="ltr">
+              </div>
+            </div>
+            <div class="settings-card">
+              <h3>البيانات</h3>
+              <p class="settings-card__text">تصدير واستيراد بيانات المنتجات.</p>
+              <div class="settings-card__actions">
+                <button class="btn btn--accent" id="exportDataBtn">تصدير JSON</button>
+                <label class="btn btn--outline">
+                  استيراد JSON
+                  <input type="file" id="importDataInput" accept=".json" hidden>
+                </label>
+              </div>
+            </div>
+            <div class="settings-card">
+              <h3>المظهر</h3>
+              <p class="settings-card__text">تبديل المظهر بين الوضع الداكن والفاتح.</p>
+              <div class="settings-card__actions">
+                <button class="btn btn--outline" id="settingsThemeToggle">تبديل المظهر</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /content-area -->
+    </main>
+  </div><!-- /admin-shell -->
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle" aria-hidden="true">
+    <div class="modal modal--sm">
+      <div class="modal__header modal__header--danger">
+        <h3 id="deleteModalTitle">تأكيد الحذف</h3>
+      </div>
+      <div class="modal__body">
+        <p class="modal__text" id="deleteModalText">هل أنت متأكد من حذف هذا المنتج؟</p>
+        <p class="modal__subtext" id="deleteModalSubtext"></p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--ghost" id="deleteCancelBtn">إلغاء</button>
+        <button class="btn btn--danger" id="deleteConfirmBtn">نعم، حذف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal-overlay" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle" aria-hidden="true">
+    <div class="modal modal--lg">
+      <button class="modal__close" id="previewCloseBtn" aria-label="Close preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal__body" id="previewModalBody"></div>
+    </div>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div class="modal-overlay" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle" aria-hidden="true">
+    <div class="modal modal--sm">
+      <button class="modal__close" id="qrCloseBtn" aria-label="Close QR modal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal__body qr-modal">
+        <h3 class="modal__title" id="qrModalTitle">QR Code</h3>
+        <p class="qr-modal__product" id="qrProductName"></p>
+        <div class="qr-modal__canvas" id="qrCanvas"></div>
+        <div class="qr-modal__link">
+          <input type="text" id="qrLinkInput" readonly class="input" aria-label="Product link">
+          <button type="button" class="btn btn--ghost btn--sm" id="qrCopyLinkBtn">نسخ الرابط</button>
+        </div>
+        <div class="qr-modal__actions">
+          <button class="btn btn--accent btn--sm" id="qrDownloadBtn">تحميل QR</button>
+        </div>
+        <p class="qr-modal__feedback" id="qrFeedback" hidden>تم نسخ الرابط!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/qrcode-generator.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

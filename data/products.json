@@ -1,0 +1,432 @@
+{
+  "products": [
+    {
+      "id": "omega-co2-laser-001",
+      "name": { "ar": "جهاز ليزر ثاني أكسيد الكربون", "en": "CO2 Fractional Laser System" },
+      "brand": "OMEGA Technology",
+      "category": "beauty-laser",
+      "sku": "OMG-CO2-FRAC-001",
+      "description": {
+        "ar": "جهاز ليزر ثاني أكسيد الكربون الكسري المتطور لعلاجات البشرة والتجعيد والندبات. مصمم بأحدث التقنيات لتقديم نتائج استثنائية في العيادات التجميلية.",
+        "en": "Advanced fractional CO2 laser system for skin resurfacing, wrinkle reduction, and scar treatment. Designed with cutting-edge technology to deliver exceptional results in aesthetic clinics."
+      },
+      "features": {
+        "ar": ["تقنية ليزر كسري متقدمة", "شاشة لمسية LCD", "نظام تبريد مدمج", "مستويات طاقة متعددة", "مناسب لجميع أنواع البشرة"],
+        "en": ["Advanced fractional laser technology", "LCD touchscreen interface", "Built-in cooling system", "Multiple energy levels", "Suitable for all skin types"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "طول الموجة", "value": "10600nm" },
+          { "key": "طاقة الإخراج", "value": "up to 40W" },
+          { "key": "حجم البقعة", "value": "0.1-2.5mm" },
+          { "key": "الوزن", "value": "45 kg" }
+        ],
+        "en": [
+          { "key": "Wavelength", "value": "10600nm" },
+          { "key": "Output Power", "value": "up to 40W" },
+          { "key": "Spot Size", "value": "0.1-2.5mm" },
+          { "key": "Weight", "value": "45 kg" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنتين", "en": "2-Year Warranty" },
+      "afterSales": { "ar": "دعم فني على مدار الساعة + صيانة دورية", "en": "24/7 technical support + periodic maintenance" },
+      "featured": true,
+      "image": null,
+      "keywords": ["laser", "co2", "fractional", "skin", "aesthetic", "ليزر", "تجميل", "بشرة"],
+      "createdAt": "2025-01-15"
+    },
+    {
+      "id": "omega-nd-yag-laser-002",
+      "name": { "ar": "جهاز ليزر ND:YAG", "en": "ND:YAG Laser System" },
+      "brand": "OMEGA Technology",
+      "category": "beauty-laser",
+      "sku": "OMG-NDYAG-002",
+      "description": {
+        "ar": "جهاز ليزر ND:YAG متعدد الاستخدامات لعلاج الأوعية الدموية ونزع الشعر وتفتيح البشرة. مجهز بأفضل تقنيات الحماية والراحة للمرضى.",
+        "en": "Multi-purpose ND:YAG laser system for vascular treatments, hair removal, and skin rejuvenation. Equipped with the best protection and comfort technologies for patients."
+      },
+      "features": {
+        "ar": ["مضخمات روسية", "نظام تبريد Cryo", "نبض أتمتيكي", "شاشة تحكم ذكية"],
+        "en": ["Russian-made components", "Cryo cooling system", "Automatic pulse control", "Smart control panel"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "طول الموجة", "value": "532nm / 1064nm" },
+          { "key": "طاقة الإخراج", "value": "up to 500mJ" },
+          { "key": "معدل التكرار", "value": "1-10 Hz" },
+          { "key": "الوزن", "value": "38 kg" }
+        ],
+        "en": [
+          { "key": "Wavelength", "value": "532nm / 1064nm" },
+          { "key": "Output Energy", "value": "up to 500mJ" },
+          { "key": "Repetition Rate", "value": "1-10 Hz" },
+          { "key": "Weight", "value": "38 kg" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنتين", "en": "2-Year Warranty" },
+      "afterSales": { "ar": "دعم فني + تدريب مجاني على الجهاز", "en": "Technical support + free device training" },
+      "featured": true,
+      "image": null,
+      "keywords": ["laser", "nd:yag", "vascular", "hair removal", "ليزر", "نزع شعر", "أوعية"],
+      "createdAt": "2025-02-20"
+    },
+    {
+      "id": "omega-diode-laser-003",
+      "name": { "ar": "جهاز ليزر الديود لنزع الشعر", "en": "Diode Laser Hair Removal" },
+      "brand": "OMEGA Technology",
+      "category": "beauty-laser",
+      "sku": "OMG-DIODE-003",
+      "description": {
+        "ar": "جهاز ليزر الديود الثمانيني واط لنزع الشعر الدائم. يصلح لجميع أنواع البشرة مع نتائج فورية ودائمة.",
+        "en": "808nm diode laser system for permanent hair removal. Suitable for all skin types with immediate and lasting results."
+      },
+      "features": {
+        "ar": ["ليزر 808nm نقي", "نظام تبريد سافار", "مساحة علاج كبيرة", "وضع سريع للمنطقة الكاملة"],
+        "en": ["Pure 808nm diode", "Sapphire cooling system", "Large treatment area", "Full-body fast mode"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "طول الموجة", "value": "808nm" },
+          { "key": "طاقة الإخراج", "value": "up to 1200W" },
+          { "key": "حجم البقعة", "value": "12x12mm" },
+          { "key": "الوزن", "value": "35 kg" }
+        ],
+        "en": [
+          { "key": "Wavelength", "value": "808nm" },
+          { "key": "Output Power", "value": "up to 1200W" },
+          { "key": "Spot Size", "value": "12x12mm" },
+          { "key": "Weight", "value": "35 kg" }
+        ]
+      },
+      "warranty": { "ar": "ضمان 3 سنوات", "en": "3-Year Warranty" },
+      "afterSales": { "ar": "ضمان شامل + صيانة مجدولة", "en": "Comprehensive warranty + scheduled maintenance" },
+      "featured": false,
+      "image": null,
+      "keywords": ["diode", "laser", "hair removal", "808nm", "ديود", "نزع شعر"],
+      "createdAt": "2025-03-10"
+    },
+    {
+      "id": "omega-ultrasound-004",
+      "name": { "ar": "جهاز أشعة فوق صوتية محمول", "en": "Portable Ultrasound Scanner" },
+      "brand": "OMEGA Technology",
+      "category": "medical-devices",
+      "sku": "OMG-ULTRA-004",
+      "description": {
+        "ar": "جهاز أشعة فوق صوتية محمول بدقة عالية مع شاشة ملونة عالية الوضوح. مناسب للاستخدام السريري والميداني.",
+        "en": "High-resolution portable ultrasound scanner with HD color display. Suitable for clinical and field use."
+      },
+      "features": {
+        "ar": ["شاشة 12.1 بوصة", "sonde متعدد", "بطارية مدمجة", "تخزين سحابي"],
+        "en": ["12.1-inch screen", "Multi-probe support", "Built-in battery", "Cloud storage"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "حجم الشاشة", "value": "12.1 بوصة" },
+          { "key": "دقة الصورة", "value": "Full HD" },
+          { "key": "البطارية", "value": "ساعتان" },
+          { "key": "الوزن", "value": "6 kg" }
+        ],
+        "en": [
+          { "key": "Screen Size", "value": "12.1 inch" },
+          { "key": "Image Resolution", "value": "Full HD" },
+          { "key": "Battery Life", "value": "2 hours" },
+          { "key": "Weight", "value": "6 kg" }
+        ]
+      },
+      "warranty": { "ar": "ضمان 3 سنوات", "en": "3-Year Warranty" },
+      "afterSales": { "ar": "تدريب مجاني + دعم فني مستمر", "en": "Free training + ongoing technical support" },
+      "featured": true,
+      "image": null,
+      "keywords": ["ultrasound", "scanner", "portable", "أشعة", "متحولة", "محمول"],
+      "createdAt": "2025-04-05"
+    },
+    {
+      "id": "omega-surgical-lights-005",
+      "name": { "ar": "إنارة عمليات جراحية LED", "en": "LED Surgical Operating Lights" },
+      "brand": "OMEGA Technology",
+      "category": "medical-devices",
+      "sku": "OMG-SURG-LT-005",
+      "description": {
+        "ar": "نظام إنارة جراحية LED عالي الأداء بتقنية مركبة متقدمة. يوفر إنارة موحدة خالية من الظلال مع درجة حرارة لون قابلة للتعديل.",
+        "en": "High-performance LED surgical lighting system with advanced composite technology. Provides uniform shadow-free illumination with adjustable color temperature."
+      },
+      "features": {
+        "ar": ["إنارة 100,000 لوكس", "عدة أذرع قابلة للتعديل", "نظام تبريد ذكي", "تحكم عن بُعد"],
+        "en": ["100,000 lux illumination", "Adjustable multi-arm system", "Smart cooling system", "Remote control"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "السطوع", "value": "100,000 لوكس" },
+          { "key": "درجة الحرارة اللونية", "value": "3500K-5000K" },
+          { "key": "عمق التركيز", "value": "60-150 cm" },
+          { "key": "الاستهلاك", "value": "150W" }
+        ],
+        "en": [
+          { "key": "Brightness", "value": "100,000 lux" },
+          { "key": "Color Temperature", "value": "3500K-5000K" },
+          { "key": "Focus Depth", "value": "60-150 cm" },
+          { "key": "Power Consumption", "value": "150W" }
+        ]
+      },
+      "warranty": { "ar": "ضمان 5 سنوات", "en": "5-Year Warranty" },
+      "afterSales": { "ar": "تركيب + صيانة سنوية", "en": "Installation + annual maintenance" },
+      "featured": false,
+      "image": null,
+      "keywords": ["surgical", "lights", "LED", "operating", "إنارة", "عمليات", "جرحية"],
+      "createdAt": "2025-05-01"
+    },
+    {
+      "id": "omega-ppe-kit-006",
+      "name": { "ar": "طقم حماية شخصية طبي", "en": "Medical PPE Kit" },
+      "brand": "OMEGA Technology",
+      "category": "medical-supplies",
+      "sku": "OMG-PPE-KIT-006",
+      "description": {
+        "ar": "طقم حماية شخصية متكامل يشمل ماسكات N95 وقفازات نتريل وأقنعة وجهية وبروتوكولات طبية.",
+        "en": "Complete personal protective equipment kit including N95 masks, nitrile gloves, face shields, and medical protocol gowns."
+      },
+      "features": {
+        "ar": ["معتمد من CE", "مواد عالية الجودة", "تغليف بالجملة", "مقاوم للماء"],
+        "en": ["CE certified", "High-quality materials", "Multi-pack", "Water-resistant"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "المعيار", "value": "CE / ISO 13485" },
+          { "key": "الكمية", "value": "50 قطعة/علبة" },
+          { "key": "المقاس", "value": "قياس موحد" },
+          { "key": "اللون", "value": "أزرق / أبيض" }
+        ],
+        "en": [
+          { "key": "Standard", "value": "CE / ISO 13485" },
+          { "key": "Quantity", "value": "50 pcs/box" },
+          { "key": "Size", "value": "Universal" },
+          { "key": "Color", "value": "Blue / White" }
+        ]
+      },
+      "warranty": { "ar": "ضمان الجودة", "en": "Quality Guarantee" },
+      "afterSales": { "ar": "توصيل سريع + كميات بالجملة", "en": "Fast delivery + bulk quantities" },
+      "featured": false,
+      "image": null,
+      "keywords": ["ppe", "kit", "n95", "gloves", "حماية", "شخصية", "طبي"],
+      "createdAt": "2025-06-15"
+    },
+    {
+      "id": "omega-disposable-syringe-007",
+      "name": { "ar": "أبرة حقن طبية أحادية الاستخدام", "en": "Disposable Medical Syringes" },
+      "brand": "OMEGA Technology",
+      "category": "disposables",
+      "sku": "OMG-SYR-10ML-007",
+      "description": {
+        "ar": "أبرة حقن طبية عالية الجودة بسعة 10 مل، أحادية الاستخدام مع غطاء أمان. تتوافق مع المعايير الدولية.",
+        "en": "High-quality 10ml disposable medical syringes with safety cap. International standards compliant."
+      },
+      "features": {
+        "ar": ["إبرة ستانلس ستيل", "جسم بلاستيكي شفاف", "غطاء أمان", "تغليف بالجملة"],
+        "en": ["Stainless steel needle", "Transparent plastic barrel", "Safety cap", "Bulk packaging"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "السعة", "value": "10 مل" },
+          { "key": "قطر الإبرة", "value": "21G" },
+          { "key": "العدد", "value": "100/علبة" },
+          { "key": "المعيار", "value": "ISO 7886" }
+        ],
+        "en": [
+          { "key": "Capacity", "value": "10ml" },
+          { "key": "Needle Gauge", "value": "21G" },
+          { "key": "Quantity", "value": "100/box" },
+          { "key": "Standard", "value": "ISO 7886" }
+        ]
+      },
+      "warranty": { "ar": "ضمان الجودة", "en": "Quality Guarantee" },
+      "afterSales": { "ar": "توصيل + أسعار بالجملة", "en": "Delivery + bulk pricing" },
+      "featured": false,
+      "image": null,
+      "keywords": ["syringe", "disposable", "needle", "إبر", "حقن", "أحادية"],
+      "createdAt": "2025-07-01"
+    },
+    {
+      "id": "omega-pulse-oximeter-008",
+      "name": { "ar": "جهاز قياس الأكسجين في الدم", "en": "Pulse Oximeter" },
+      "brand": "OMEGA Technology",
+      "category": "medical-devices",
+      "sku": "OMG-PULSE-OX-008",
+      "description": {
+        "ar": "جهاز قياس نبضات الأكسجين في الدم بدقة عالية مع شاشة OLED ملونة. خفيف الوزن ومناسب للاستخدام المنزلي والسريري.",
+        "en": "High-accuracy pulse oximeter with color OLED display. Lightweight and suitable for home and clinical use."
+      },
+      "features": {
+        "ar": ["شاشة OLED ملونة", "قياس سريع", "بطارية طويلة العمر", "تنبيه صوتي"],
+        "en": ["Color OLED display", "Fast measurement", "Long battery life", "Audio alert"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "دقة SpO2", "value": "±2%" },
+          { "key": "نطاق النبض", "value": "25-250 bpm" },
+          { "key": "البطارية", "value": "AAA x2" },
+          { "key": "الوزن", "value": "50g" }
+        ],
+        "en": [
+          { "key": "SpO2 Accuracy", "value": "±2%" },
+          { "key": "Pulse Range", "value": "25-250 bpm" },
+          { "key": "Battery", "value": "2x AAA" },
+          { "key": "Weight", "value": "50g" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنة", "en": "1-Year Warranty" },
+      "afterSales": { "ar": "استبدال مجاني خلال فترة الضمان", "en": "Free replacement during warranty" },
+      "featured": true,
+      "image": null,
+      "keywords": ["oximeter", "pulse", "oxygen", "أكسجين", "نبض", "قياس"],
+      "createdAt": "2025-08-10"
+    },
+    {
+      "id": "omega-derma-pen-009",
+      "name": { "ar": "قلم ميكرونيدل طبي", "en": "Medical Micro-needling Pen" },
+      "brand": "OMEGA Technology",
+      "category": "beauty-laser",
+      "sku": "OMG-DPEN-009",
+      "description": {
+        "ar": "قلم ميكرونيدل طبي رقمي بسرعة قابلة للتعديل. مثالي لعلاجات تجديد البشرة والندبات وتصبغات الجلد.",
+        "en": "Digital medical micro-needling pen with adjustable speed. Ideal for skin rejuvenation, scar treatment, and pigmentation."
+      },
+      "features": {
+        "ar": ["سرعة متغيرة 5-25", "إبرات متعددة", "بطارية قابلة للشحن", "تصميم مريح"],
+        "en": ["Variable speed 5-25", "Multiple needle cartridges", "Rechargeable battery", "Ergonomic design"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "السرعة", "value": "5-25 دورة/ثانية" },
+          { "key": "عمق الإبر", "value": "0.25-2.5mm" },
+          { "key": "البطارية", "value": "قابلة للشحن Li-ion" },
+          { "key": "الوزن", "value": "120g" }
+        ],
+        "en": [
+          { "key": "Speed", "value": "5-25 cycles/sec" },
+          { "key": "Needle Depth", "value": "0.25-2.5mm" },
+          { "key": "Battery", "value": "Rechargeable Li-ion" },
+          { "key": "Weight", "value": "120g" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنة", "en": "1-Year Warranty" },
+      "afterSales": { "ar": "إرشادات استخدام + دعم فني", "en": "Usage guidelines + technical support" },
+      "featured": false,
+      "image": null,
+      "keywords": ["derma", "pen", "microneedling", "قلم", "ميكرونيدل", "بشرة"],
+      "createdAt": "2025-09-01"
+    },
+    {
+      "id": "omega-spare-parts-010",
+      "name": { "ar": "مجموعة قطع غيار أصلية لأجهزة ليزر OMEGA", "en": "OMEGA Laser Original Spare Parts Kit" },
+      "brand": "OMEGA Technology",
+      "category": "spare-parts",
+      "sku": "OMG-SPARE-010",
+      "description": {
+        "ar": "مجموعة قطع غيار أصلية متوافقة مع أجهزة ليزر OMEGA. تشمل وحدة الليزر ولوحات التحكم والمكونات الكهربائية.",
+        "en": "Original spare parts kit compatible with OMEGA laser systems. Includes laser heads, control boards, and electrical components."
+      },
+      "features": {
+        "ar": ["قطع غيار أصلية", "توافق كامل", "تغليف آمن", "شحن دولي"],
+        "en": ["Genuine parts", "Full compatibility", "Safe packaging", "International shipping"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "التوافق", "value": "جميع أجهزة ليزر OMEGA" },
+          { "key": "النوع", "value": "وحدة ليزر + لوحات تحكم" },
+          { "key": "الحالة", "value": "جديد 100%" },
+          { "key": "بلد المنشأ", "value": "تركيا" }
+        ],
+        "en": [
+          { "key": "Compatibility", "value": "All OMEGA laser systems" },
+          { "key": "Type", "value": "Laser head + control boards" },
+          { "key": "Condition", "value": "100% new" },
+          { "key": "Origin", "value": "Turkey" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنة على قطع الغيار", "en": "1-Year warranty on parts" },
+      "afterSales": { "ar": "تركيب + ضمان", "en": "Installation + warranty" },
+      "featured": false,
+      "image": null,
+      "keywords": ["spare", "parts", "laser", "omega", "قطع", "غيار", "أصلية"],
+      "createdAt": "2025-10-05"
+    },
+    {
+      "id": "omega-accessories-pack-011",
+      "name": { "ar": "حقيبة إكسسوارات طبية", "en": "Medical Accessories Pack" },
+      "brand": "OMEGA Technology",
+      "category": "accessories",
+      "sku": "OMG-ACC-PACK-011",
+      "description": {
+        "ar": "حقيبة إكسسوارات طبية متكاملة تشمل سماعات طبية ومقياس ضغط دم وحقيبة تخزين ونظارات سلامة وملحقات أخرى.",
+        "en": "Complete medical accessories pack including stethoscope, blood pressure monitor, storage case, magnifying glass, safety goggles, and other accessories."
+      },
+      "features": {
+        "ar": ["ماركة أوروبية", "مواد عالية الجودة", "حقيبة تخزين أنيقة", "مناسبة للمهنيين"],
+        "en": ["European brand", "High-quality materials", "Elegant storage case", "Suitable for professionals"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "المحتويات", "value": "سماعات + ضغط + نظارات" },
+          { "key": "الحقيبة", "value": "جلد صناعي فاخر" },
+          { "key": "الوزن", "value": "1.5 kg" },
+          { "key": "بلد المنشأ", "value": "تركيا" }
+        ],
+        "en": [
+          { "key": "Contents", "value": "Stethoscope + BP + Goggles" },
+          { "key": "Case", "value": "Premium faux leather" },
+          { "key": "Weight", "value": "1.5 kg" },
+          { "key": "Origin", "value": "Turkey" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنة", "en": "1-Year Warranty" },
+      "afterSales": { "ar": "استبدال القطع التالفة", "en": "Replacement for defective items" },
+      "featured": false,
+      "image": null,
+      "keywords": ["accessories", "medical", "kit", "stethoscope", "إكسسوارات", "طبية", "حقيبة"],
+      "createdAt": "2025-11-12"
+    },
+    {
+      "id": "omega-hydrafacial-012",
+      "name": { "ar": "جهاز هيدرا فيشال متعدد الوظائف", "en": "Multi-function Hydra Facial System" },
+      "brand": "OMEGA Technology",
+      "category": "beauty-laser",
+      "sku": "OMG-HFAC-012",
+      "description": {
+        "ar": "جهاز هيدرا فيشال متعدد الوظائف يجمع بين التنظيف العميق والتقشير والترطيب والحماية. 6 وظائف في جهاز واحد.",
+        "en": "Multi-function hydra facial system combining deep cleansing, exfoliation, hydration, and protection. 6 functions in one device."
+      },
+      "features": {
+        "ar": ["6 وظائف متعددة", "شفط قوي", "تقشير بالماء", "رذاذ للبشرة", "علاج ضوئي LED"],
+        "en": ["6 multi-functions", "Powerful suction", "Water dermabrasion", "Skin spray", "LED light therapy"]
+      },
+      "specifications": {
+        "ar": [
+          { "key": "الوظائف", "value": "6 وظائف" },
+          { "key": "قوة الشفط", "value": "0-65 cmHg" },
+          { "key": "ضغط الماء", "value": "قابل للتعديل" },
+          { "key": "الوزن", "value": "28 kg" }
+        ],
+        "en": [
+          { "key": "Functions", "value": "6 functions" },
+          { "key": "Suction Power", "value": "0-65 cmHg" },
+          { "key": "Water Pressure", "value": "Adjustable" },
+          { "key": "Weight", "value": "28 kg" }
+        ]
+      },
+      "warranty": { "ar": "ضمان سنتين", "en": "2-Year Warranty" },
+      "afterSales": { "ar": "تدريب + صيانة دورية", "en": "Training + periodic maintenance" },
+      "featured": true,
+      "image": null,
+      "keywords": ["hydrafacial", "facial", "cleanse", "هيدرا", "فيشال", "بشرة", "تنظيف"],
+      "createdAt": "2025-12-01"
+    }
+  ],
+  "categories": [
+    { "id": "medical-devices", "name": { "ar": "أجهزة طبية", "en": "Medical Devices" }, "icon": "stethoscope", "description": { "ar": "أجهزة ومعدات طبية احترافية للمستشفيات والعيادات", "en": "Professional medical devices and equipment for hospitals and clinics" } },
+    { "id": "beauty-laser", "name": { "ar": "أجهزة تجميل وليزر", "en": "Beauty & Laser Devices" }, "icon": "sparkles", "description": { "ar": "أجهزة تجميل وليزر متطورة للعيادات التجميلية", "en": "Advanced beauty and laser devices for aesthetic clinics" } },
+    { "id": "medical-supplies", "name": { "ar": "مستلزمات طبية", "en": "Medical Supplies" }, "icon": "shield", "description": { "ar": "مستلزمات طبية عالية الجودة بمعايير دولية", "en": "High-quality medical supplies with international standards" } },
+    { "id": "disposables", "name": { "ar": "مستهلكات طبية", "en": "Medical Disposables" }, "icon": "box", "description": { "ar": "مستهلكات طبية أحادية الاستخدام معتمدة", "en": "Certified single-use medical disposables" } },
+    { "id": "spare-parts", "name": { "ar": "قطع غيار أصلية", "en": "Original Spare Parts" }, "icon": "cog", "description": { "ar": "قطع غيار أصلية متوافقة مع جميع الأجهزة", "en": "Genuine spare parts compatible with all devices" } },
+    { "id": "accessories", "name": { "ar": "إكسسوارات", "en": "Accessories" }, "icon": "gem", "description": { "ar": "إكسسوارات وملحقات طبية وتجميلية متنوعة", "en": "Various medical and aesthetic accessories" } }
+  ]
+}

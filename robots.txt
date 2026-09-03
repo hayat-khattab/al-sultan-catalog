@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /netlify/
+
+Sitemap: https://alsultan-medical.com/sitemap.xml

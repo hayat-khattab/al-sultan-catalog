@@ -1,0 +1,19 @@
+# Environment / secrets (NEVER commit)
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Netlify local
+.netlify/

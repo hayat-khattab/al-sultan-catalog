@@ -1,0 +1,90 @@
+# ==========================================================
+# AL SULTAN MEDICAL CATALOG — Netlify Configuration
+# ==========================================================
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Self-contained setup: no environment variables required.
+# Admin login credentials are embedded in netlify/functions/auth-utils.js
+# (default: admin / admin123456789). Product data + images are stored in
+# Netlify Blobs, so the whole control panel works with a plain file upload.
+
+# Ensure the seed catalog (bundled products.json) is available to the
+# products Function so the Blobs store can be seeded on first run.
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["netlify/functions/seed-catalog.json"]
+
+# ==========================================================
+# API Routes — map /api/* to Netlify Functions
+# ==========================================================
+[[redirects]]
+  from = "/api/login"
+  to = "/.netlify/functions/login"
+  status = 200
+
+[[redirects]]
+  from = "/api/products/*"
+  to = "/.netlify/functions/products"
+  status = 200
+
+[[redirects]]
+  from = "/api/products"
+  to = "/.netlify/functions/products"
+  status = 200
+
+[[redirects]]
+  from = "/api/upload-image"
+  to = "/.netlify/functions/upload-image"
+  status = 200
+
+[[redirects]]
+  from = "/api/save-products"
+  to = "/.netlify/functions/save-products"
+  status = 200
+
+[[redirects]]
+  from = "/api/image"
+  to = "/.netlify/functions/image"
+  status = 200
+
+[[redirects]]
+  from = "/api/image/*"
+  to = "/.netlify/functions/image"
+  status = 200
+
+# ==========================================================
+# Security Headers
+# ==========================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
+
+# No-store for API responses (don't cache session/sensitive data)
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
+# Cache static assets aggressively
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Keep the catalog data fresh so admin edits propagate quickly to the public site
+[[headers]]
+  for = "/data/products.json"
+  [headers.values]
+    Cache-Control = "no-cache"

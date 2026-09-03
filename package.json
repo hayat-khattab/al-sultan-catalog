@@ -1,0 +1,15 @@
+{
+  "name": "al-sultan-medical-catalog",
+  "version": "1.0.0",
+  "description": "AL SULTAN MEDICAL & AESTHETIC CATALOG - شركة السلطان التجارية",
+  "scripts": {
+    "dev": "npx serve .",
+    "lint": "echo 'Linting not configured yet'"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  },
+  "author": "Al Sultan Trading Company",
+  "license": "UNLICENSED",
+  "private": true
+}
