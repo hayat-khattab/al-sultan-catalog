@@ -1232,7 +1232,11 @@
   async function init() {
     applyTheme(currentTheme);
 
-    await DataStore.load();
+    // Load catalog in the background; a failure here must never block
+    // the login screen from working.
+    DataStore.load().catch((err) => {
+      console.error('Initial catalog load failed:', err);
+    });
 
     setupLogin();
     setupSidebar();
