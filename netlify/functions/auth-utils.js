@@ -21,37 +21,32 @@ const crypto = require('crypto');
 
 /* ----------------------------------------------------------
    ENVIRONMENT CONFIGURATION (server-side only)
+   Credentials and session secret come exclusively from Netlify
+   Environment Variables: ADMIN_USERNAME / ADMIN_PASSWORD /
+   SESSION_SECRET. There is NO hardcoded fallback. If any is
+   missing the authentication endpoints fail clearly (HTTP 500).
    ---------------------------------------------------------- */
+const ADMIN_USER = process.env.ADMIN_USERNAME;
+const ADMIN_PASS = process.env.ADMIN_PASSWORD;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
 const TOKEN_EXPIRY_MS = 8 * 60 * 60 * 1000; // 8 hours
 
-function requireEnv(name) {
-  const value = process.env[name];
-  if (typeof value !== 'string' || value.trim() === '') return null;
-  return value.trim();
-}
-
-function getAdminUsername() {
-  const value = requireEnv('ADMIN_USERNAME');
-  if (!value) {
+function assertAuthConfigured() {
+  if (!ADMIN_USER) {
     throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'ADMIN_USERNAME is not set. Add it in Netlify > Site settings > Environment variables.' }) };
   }
-  return value;
-}
-
-function getAdminPassword() {
-  const value = requireEnv('ADMIN_PASSWORD');
-  if (!value) {
+  if (!ADMIN_PASS) {
     throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'ADMIN_PASSWORD is not set. Add it in Netlify > Site settings > Environment variables.' }) };
   }
-  return value;
+  if (!SESSION_SECRET) {
+    throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'SESSION_SECRET is not set. Add it in Netlify > Site settings > Environment variables.' }) };
+  }
 }
 
 function getSessionSecret() {
-  const value = requireEnv('SESSION_SECRET');
-  if (!value) {
-    throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'SESSION_SECRET is not set. Add it in Netlify > Site settings > Environment variables.' }) };
-  }
-  return value;
+  assertAuthConfigured();
+  return SESSION_SECRET;
 }
 
 /* --- Blob store names --- */
@@ -155,13 +150,12 @@ async function imageGet(key) {
 function validateCredentials(username, password) {
   if (typeof username !== 'string' || typeof password !== 'string') return false;
 
-  const expectedUser = getAdminUsername();
-  const expectedPass = getAdminPassword();
+  assertAuthConfigured();
 
   const a = Buffer.from(String(username));
-  const b = Buffer.from(String(expectedUser));
+  const b = Buffer.from(String(ADMIN_USER));
   const c = Buffer.from(String(password));
-  const d = Buffer.from(String(expectedPass));
+  const d = Buffer.from(String(ADMIN_PASS));
 
   const userOk = a.length === b.length && crypto.timingSafeEqual(a, b);
   const passOk = c.length === d.length && crypto.timingSafeEqual(c, d);
