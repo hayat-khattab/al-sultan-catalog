@@ -94,18 +94,21 @@ The admin saves products to this repository via the GitHub API, so GitHub must b
 
 ## Environment variables
 
-This setup is **self-contained**: the admin login credentials are embedded directly in
-`netlify/functions/auth-utils.js`, so **no environment variables are required** for the
-dashboard to work. Products and uploaded images are stored in **Netlify Blobs**.
+The admin login credentials and the session secret are **never embedded in the code** — they
+are read server-side from Netlify environment variables. Product data and uploaded images are
+stored in **Netlify Blobs**.
 
-> ⚠️ Because there are no env vars, the credentials live in the function file. Anyone with
-> read access to the deployed functions can read them — that's the trade-off of a "upload
-> and go" setup. To change credentials, edit `ADMIN_USER` / `ADMIN_PASS` in
-> `netlify/functions/auth-utils.js`.
+Required environment variables (set in **Netlify UI → Site settings → Environment variables**):
 
-Default credentials:
-- **Username:** `Administrator`
-- **Password:** `Admin123456789`
+| Variable          | Purpose                                                        |
+|-------------------|----------------------------------------------------------------|
+| `ADMIN_USERNAME`  | Admin login username (server-side only)                        |
+| `ADMIN_PASSWORD`  | Admin login password (server-side only)                        |
+| `SESSION_SECRET`  | Secret used to sign login tokens, e.g. `openssl rand -hex 64`  |
+
+> ⚠️ These values are never shipped to the browser and never appear in any public file.
+> See `.env.example` for safe placeholder names. Do not put real values in this README
+> or anywhere in the repository.
 
 ---
 
@@ -135,7 +138,8 @@ and provisions the Blobs storage, which is what lets added products persist.
 
 - Live site: `https://YOUR-SITE.netlify.app/admin.html` (or your custom domain).
 - There is a **"لوحة التحكم" (Control Panel)** link in the site's navigation header.
-- Log in with the embedded credentials (`Administrator` / `Admin123456789`).
+- Log in using the same `ADMIN_USERNAME` / `ADMIN_PASSWORD` you configured in Netlify
+  environment variables.
 
 ### What you can do in the dashboard
 

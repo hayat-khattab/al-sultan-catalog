@@ -4,7 +4,7 @@
    Returns: { success, token, expiresAt }
    ========================================================== */
 
-const { validateCredentials, createToken, respond, corsHeaders, requireAuth } = require('./auth-utils');
+const { validateCredentials, createToken, respond, corsHeaders, requireAuth, TOKEN_EXPIRY_MS } = require('./auth-utils');
 
 exports.handler = async (event) => {
   // Handle CORS preflight
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
 
     // Create signed token
     const token = createToken({ username });
-    const expiresAt = Date.now() + (8 * 60 * 60 * 1000);
+    const expiresAt = Date.now() + TOKEN_EXPIRY_MS;
 
     return respond(200, {
       success: true,

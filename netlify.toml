@@ -6,10 +6,16 @@
   publish = "."
   functions = "netlify/functions"
 
-# Self-contained setup: no environment variables required.
-# Admin login credentials are embedded in netlify/functions/auth-utils.js
-# (default: admin / admin123456789). Product data + images are stored in
-# Netlify Blobs, so the whole control panel works with a plain file upload.
+# Configuration:
+# Admin login credentials and the session secret REQUIRE Netlify environment
+# variables (server-side only). Set them in Netlify UI > Site settings >
+# Environment variables as:
+#   ADMIN_USERNAME
+#   ADMIN_PASSWORD
+#   SESSION_SECRET   (long random string, e.g. `openssl rand -hex 64`)
+# Without these, login / protected endpoints fail clearly (HTTP 500).
+# Product data + images are stored in Netlify Blobs, so the whole control
+# panel works with a plain file upload + env vars.
 
 # Ensure the seed catalog (bundled products.json) is available to the
 # products Function so the Blobs store can be seeded on first run.

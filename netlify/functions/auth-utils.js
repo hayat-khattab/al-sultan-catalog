@@ -2,10 +2,17 @@
    auth-utils.js — Shared auth + storage helpers for the
    AL SULTAN catalog admin.
 
-   This version is fully self-contained (no GitHub, no Netlify
-   environment variables). Login credentials are embedded here
-   so the control panel works with a simple file upload to
-   Netlify. Product catalog + images are stored in Netlify Blobs.
+   Security: Admin credentials and the session secret are read
+   from server-side Netlify environment variables only:
+     ADMIN_USERNAME
+     ADMIN_PASSWORD
+     SESSION_SECRET
+   They are never embedded in source, never shipped to the
+   browser, and never exposed to the frontend. If a required
+   variable is missing the affected endpoints fail clearly
+   (HTTP 500) so the misconfiguration is obvious.
+
+   Product catalog + images are stored in Netlify Blobs.
    ========================================================== */
 
 'use strict';
@@ -13,21 +20,39 @@
 const crypto = require('crypto');
 
 /* ----------------------------------------------------------
-   EMBEDDED ADMIN CREDENTIALS
-   Change these to your preferred username / password.
-   NOTE: Because this runs in a static upload (no env vars),
-   the credentials live in this file. Anyone with access to the
-   deployed files can read them — that's the trade-off of the
-   "upload and go" setup.
+   ENVIRONMENT CONFIGURATION (server-side only)
    ---------------------------------------------------------- */
-const ADMIN_USER = 'Administrator';
-const ADMIN_PASS = 'Admin123456789';
-
-// Used to sign login tokens. A long fixed string is fine here
-// since there is no environment-variable secret to draw from.
-const SESSION_SECRET = 'al-sultan-catalog-embedded-session-secret-8f3a1c';
-
 const TOKEN_EXPIRY_MS = 8 * 60 * 60 * 1000; // 8 hours
+
+function requireEnv(name) {
+  const value = process.env[name];
+  if (typeof value !== 'string' || value.trim() === '') return null;
+  return value.trim();
+}
+
+function getAdminUsername() {
+  const value = requireEnv('ADMIN_USERNAME');
+  if (!value) {
+    throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'ADMIN_USERNAME is not set. Add it in Netlify > Site settings > Environment variables.' }) };
+  }
+  return value;
+}
+
+function getAdminPassword() {
+  const value = requireEnv('ADMIN_PASSWORD');
+  if (!value) {
+    throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'ADMIN_PASSWORD is not set. Add it in Netlify > Site settings > Environment variables.' }) };
+  }
+  return value;
+}
+
+function getSessionSecret() {
+  const value = requireEnv('SESSION_SECRET');
+  if (!value) {
+    throw { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error', message: 'SESSION_SECRET is not set. Add it in Netlify > Site settings > Environment variables.' }) };
+  }
+  return value;
+}
 
 /* --- Blob store names --- */
 const CATALOG_STORE = 'catalog';
@@ -127,17 +152,16 @@ async function imageGet(key) {
    SESSION / AUTH
    ---------------------------------------------------------- */
 
-function getSessionSecret() {
-  return SESSION_SECRET;
-}
-
 function validateCredentials(username, password) {
   if (typeof username !== 'string' || typeof password !== 'string') return false;
 
+  const expectedUser = getAdminUsername();
+  const expectedPass = getAdminPassword();
+
   const a = Buffer.from(String(username));
-  const b = Buffer.from(String(ADMIN_USER));
+  const b = Buffer.from(String(expectedUser));
   const c = Buffer.from(String(password));
-  const d = Buffer.from(String(ADMIN_PASS));
+  const d = Buffer.from(String(expectedPass));
 
   const userOk = a.length === b.length && crypto.timingSafeEqual(a, b);
   const passOk = c.length === d.length && crypto.timingSafeEqual(c, d);
