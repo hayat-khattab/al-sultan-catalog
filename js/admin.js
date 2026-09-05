@@ -330,8 +330,7 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = $('#loginEmail').value.trim();
-      const username = email; // username field (label updated in HTML)
+      const username = $('#loginEmail').value.trim();
       const password = $('#loginPassword').value;
       const errorEl = $('#loginError');
       const btn = $('#loginBtn');
@@ -340,38 +339,63 @@
       btn.disabled = true;
       errorEl.hidden = true;
 
+      let loginSucceeded = false;
       try {
-        await Auth.login(username, password);
-        isLoggedIn = true;
-        // Enter the control panel regardless of catalog load success.
-        showAdminShell();
-        // Load catalog in the background; surface errors without blocking login.
-        try {
-          await DataStore.load();
-          renderDashboard();
-        } catch (loadErr) {
-          console.error('Catalog load failed:', loadErr);
-        }
+        const loginData = await Auth.login(username, password);
+        loginSucceeded = true;
+        // Token received (in-memory only). Never log the token itself.
+        console.info('[admin] login OK: token received =', !!loginData.token, '| expiresAt =', !!loginData.expiresAt);
       } catch (err) {
+        console.error('[admin] login failed:', err && err.message);
         errorEl.textContent = 'بيانات الدخول غير صحيحة';
         errorEl.hidden = false;
       } finally {
         btn.textContent = 'تسجيل الدخول';
         btn.disabled = false;
       }
+
+      // Only enter the control panel after proven authentication.
+      if (!loginSucceeded) return;
+
+      isLoggedIn = true;
+      showAdminShell(); // hides #loginScreen, shows #adminShell, sets data-view=admin
+
+      // Load the catalog in the background. A failure here must NEVER
+      // revert the user to the login screen nor trigger the login error UI.
+      try {
+        await DataStore.load();
+        renderDashboard();
+      } catch (loadErr) {
+        console.error('[admin] catalog load failed after login (staying in dashboard):', loadErr);
+        try { renderDashboard(); } catch (_) { /* dashboard stays visible regardless */ }
+      }
     });
   }
 
   function showAdminShell() {
-    $('#loginScreen').hidden = true;
-    $('#adminShell').hidden = false;
+    const loginScreen = $('#loginScreen');
+    const adminShell = $('#adminShell');
+    loginScreen.hidden = true;
+    loginScreen.style.display = 'none';
+    adminShell.hidden = false;
+    adminShell.style.display = 'flex';
     document.body.dataset.view = 'admin';
-    renderDashboard();
+    console.info('[admin] showAdminShell: loginScreen.hidden =', loginScreen.hidden, '| adminShell.hidden =', adminShell.hidden, '| view = admin');
+    try {
+      renderDashboard();
+    } catch (err) {
+      // A dashboard render problem must not undo the authenticated state.
+      console.error('[admin] dashboard render failed after login (login remains active):', err);
+    }
   }
 
   function showLoginScreen() {
-    $('#loginScreen').hidden = false;
-    $('#adminShell').hidden = true;
+    const loginScreen = $('#loginScreen');
+    const adminShell = $('#adminShell');
+    loginScreen.hidden = false;
+    loginScreen.style.display = 'flex';
+    adminShell.hidden = true;
+    adminShell.style.display = 'none';
     document.body.dataset.view = 'login';
     $('#loginForm').reset();
     Auth.logout();
