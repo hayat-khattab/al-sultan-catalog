@@ -57,7 +57,7 @@ exports.handler = async (event) => {
       }
     }
 
-    await catalogSave({ products: body.products, categories: body.categories });
+    await catalogSave({ products: body.products, categories: body.categories }, event);
 
     return respond(200, {
       success: true,

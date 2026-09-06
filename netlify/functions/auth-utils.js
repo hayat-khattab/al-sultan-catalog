@@ -55,20 +55,24 @@ const CATALOG_KEY = 'products';
 const IMAGES_STORE = 'images';
 
 /* --- Netlify Blobs access ---
-   Prefer the runtime-built-in `netlify:blobs` (no npm install,
-   ideal for drag-and-drop deploys). Fall back to a vendored
-   `@netlify/blobs` package in node_modules if present. */
+   Prefer the npm `@netlify/blobs` package — the officially supported API.
+   These Functions use the classic (v1) handler signature, i.e. Netlify
+   "Lambda compatibility mode", where the runtime does NOT inject the Blobs
+   context automatically. Per the official docs we therefore initialize it by
+   calling `connectLambda(event)` immediately before `getStore`, which derives
+   the auto-provisioned credentials from the request event — no secrets
+   required. A legacy `netlify:blobs` fallback is kept for older runtimes. */
 let blobsModule = null;
 
 function loadBlobs() {
   if (blobsModule) return blobsModule;
   try {
     // eslint-disable-next-line global-require
-    blobsModule = require('netlify:blobs');
+    blobsModule = require('@netlify/blobs');
   } catch {
     try {
       // eslint-disable-next-line global-require
-      blobsModule = require('@netlify/blobs');
+      blobsModule = require('netlify:blobs');
     } catch {
       blobsModule = null;
     }
@@ -80,10 +84,20 @@ function hasBlobs() {
   return !!loadBlobs();
 }
 
-function getStore(name) {
+function getStore(name, event = null) {
   const blobs = loadBlobs();
-  // Prefer the auto-injected Netlify Blobs credentials; also accept the
-  // explicit BLOB_SITE_ID / BLOB_TOKEN aliases so either can be configured.
+  // Operational on Functions v1 / Lambda compatibility mode: initialize the
+  // Blobs environment from the request event before any store access.
+  if (event && typeof blobs.connectLambda === 'function') {
+    try {
+      blobs.connectLambda(event);
+    } catch {
+      // Event carries no blob context (e.g. outside the Netlify runtime);
+      // fall through to the explicit environment aliases or the SDK error.
+    }
+  }
+  // Explicit BLOB_SITE_ID / BLOB_TOKEN aliases remain supported as overrides
+  // for environments without the auto-provisioned context.
   const siteID = process.env.NETLIFY_BLOBS_SITE_ID || process.env.BLOB_SITE_ID;
   const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.BLOB_TOKEN;
   if (siteID && token) {
@@ -96,21 +110,21 @@ function getStore(name) {
 }
 
 /* --- Catalog read/write helpers --- */
-async function catalogGetDefault() {
+async function catalogGetDefault(event = null) {
   // If the blob store is empty, return null so callers can seed
   // from the bundled data/products.json.
   try {
-    const store = getStore(CATALOG_STORE);
-    return await store.get(CATALOG_KEY, { type: 'json', consistency: 'strong' });
+    const store = getStore(CATALOG_STORE, event);
+    return await store.get(CATALOG_KEY, { type: 'json' });
   } catch (err) {
     if (!hasBlobs()) throw { statusCode: 500, body: JSON.stringify({ error: 'Blobs unavailable', message: 'Netlify Blobs runtime not available on this deploy' }) };
     throw err;
   }
 }
 
-async function catalogSave(catalog) {
+async function catalogSave(catalog, event = null) {
   try {
-    const store = getStore(CATALOG_STORE);
+    const store = getStore(CATALOG_STORE, event);
     await store.setJSON(CATALOG_KEY, catalog);
     return catalog;
   } catch (err) {
@@ -120,9 +134,9 @@ async function catalogSave(catalog) {
 }
 
 /* --- Image write/read helpers --- */
-async function imagePut(key, data, contentType) {
+async function imagePut(key, data, contentType, event = null) {
   try {
-    const store = getStore(IMAGES_STORE);
+    const store = getStore(IMAGES_STORE, event);
     await store.set(key, Buffer.from(data), { metadata: { contentType } });
   } catch (err) {
     if (!hasBlobs()) throw { statusCode: 500, body: JSON.stringify({ error: 'Blobs unavailable', message: 'Netlify Blobs runtime not available on this deploy' }) };
@@ -130,10 +144,10 @@ async function imagePut(key, data, contentType) {
   }
 }
 
-async function imageGet(key) {
+async function imageGet(key, event = null) {
   try {
-    const store = getStore(IMAGES_STORE);
-    const entry = await store.getWithMetadata(key, { type: 'blob', consistency: 'strong' });
+    const store = getStore(IMAGES_STORE, event);
+    const entry = await store.getWithMetadata(key, { type: 'blob' });
     if (!entry) return null;
     return { data: entry.data, metadata: entry.metadata || {} };
   } catch (err) {

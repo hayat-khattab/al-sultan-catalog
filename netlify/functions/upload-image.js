@@ -184,7 +184,7 @@ exports.handler = async (event) => {
     const random = crypto.randomBytes(4).toString('hex');
     const safeFilename = `${safeProductId}-${Date.now()}-${random}${ext}`;
 
-    await imagePut(safeFilename, file.content, mimeType);
+    await imagePut(safeFilename, file.content, mimeType, event);
 
     const imageUrl = '/api/image?name=' + encodeURIComponent(safeFilename);
 
@@ -200,7 +200,7 @@ exports.handler = async (event) => {
     if (/blobs|environment has not been configured/i.test(errMsg)) {
       return respond(500, {
         error: 'Storage unavailable',
-        message: 'Netlify Blobs is not configured on this site. Enable Netlify Blobs or set NETLIFY_BLOBS_SITE_ID and NETLIFY_BLOBS_TOKEN environment variables.'
+        message: 'Netlify Blobs is not reachable from this function environment. The request event must carry the auto-provisioned Blobs context (Functions v1 / Lambda compatibility mode).'
       });
     }
     return respond(500, { error: 'Internal server error' });

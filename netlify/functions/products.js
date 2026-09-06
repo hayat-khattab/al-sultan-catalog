@@ -52,8 +52,8 @@ function validateProduct(product) {
 }
 
 /* --- Load catalog; seed from bundled file on first run --- */
-async function loadCatalog() {
-  let catalog = await catalogGetDefault();
+async function loadCatalog(event) {
+  let catalog = await catalogGetDefault(event);
 
   if (!catalog || !Array.isArray(catalog.products)) {
     let seed = { products: [], categories: [] };
@@ -63,7 +63,7 @@ async function loadCatalog() {
       // No bundled seed available
       seed = { products: [], categories: [] };
     }
-    await catalogSave(seed);
+    await catalogSave(seed, event);
     return seed;
   }
 
@@ -89,7 +89,7 @@ exports.handler = async (event) => {
   try {
     // --- READ (public) ---
     if (event.httpMethod === 'GET') {
-      const data = await loadCatalog();
+      const data = await loadCatalog(event);
       return respond(200, { products: data.products, categories: data.categories });
     }
 
@@ -116,14 +116,14 @@ exports.handler = async (event) => {
         return respond(400, { error: 'Validation failed', message: validationError });
       }
 
-      const data = await loadCatalog();
+      const data = await loadCatalog(event);
 
       if (data.products.some(p => p.sku === product.sku)) {
         return respond(409, { error: 'Conflict', message: 'Product with this SKU already exists' });
       }
 
       data.products.push(product);
-      await catalogSave({ products: data.products, categories: data.categories });
+      await catalogSave({ products: data.products, categories: data.categories }, event);
 
       return respond(201, { success: true, product });
     }
@@ -141,7 +141,7 @@ exports.handler = async (event) => {
       }
       delete updates.id;
 
-      const data = await loadCatalog();
+      const data = await loadCatalog(event);
       const idx = data.products.findIndex(p => p.id === productId);
       if (idx === -1) {
         return respond(404, { error: 'Not found', message: 'Product not found' });
@@ -154,7 +154,7 @@ exports.handler = async (event) => {
       }
 
       data.products[idx] = merged;
-      await catalogSave({ products: data.products, categories: data.categories });
+      await catalogSave({ products: data.products, categories: data.categories }, event);
 
       return respond(200, { success: true, product: merged });
     }
@@ -163,7 +163,7 @@ exports.handler = async (event) => {
     if (event.httpMethod === 'DELETE') {
       if (!productId) return respond(400, { error: 'Missing product id' });
 
-      const data = await loadCatalog();
+      const data = await loadCatalog(event);
       const idx = data.products.findIndex(p => p.id === productId);
       if (idx === -1) {
         return respond(404, { error: 'Not found', message: 'Product not found' });
@@ -171,7 +171,7 @@ exports.handler = async (event) => {
 
       const deleted = data.products[idx];
       data.products.splice(idx, 1);
-      await catalogSave({ products: data.products, categories: data.categories });
+      await catalogSave({ products: data.products, categories: data.categories }, event);
 
       return respond(200, { success: true, deletedId: productId });
     }

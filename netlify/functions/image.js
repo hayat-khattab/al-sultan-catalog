@@ -34,7 +34,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: corsHeaders(), body: 'Invalid image name' };
     }
 
-    const entry = await imageGet(name);
+    const entry = await imageGet(name, event);
     if (!entry) {
       return { statusCode: 404, headers: corsHeaders(), body: 'Image not found' };
     }
