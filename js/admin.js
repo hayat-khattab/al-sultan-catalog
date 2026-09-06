@@ -735,6 +735,17 @@
     input.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        toast('نوع الصورة غير مدعوم — اختر JPG أو PNG أو WEBP أو GIF', 'error');
+        e.target.value = '';
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast('حجم الصورة كبير جدًا — الحد الأقصى 5MB', 'error');
+        e.target.value = '';
+        return;
+      }
       imageFile = file;
       const reader = new FileReader();
       reader.onload = (ev) => {
@@ -852,7 +863,7 @@
       } catch (err) {
         const saveMsg = (err && err.message) || '';
         if (/blobs|environment has not been configured/i.test(saveMsg)) {
-          toast('تعذر الحفظ: خدمة التخزين (Netlify Blobs) غير مفعّلة بعد — أضف متغيرات BLOB_SITE_ID و BLOB_TOKEN في إعدادات الموقع أو فعّل Blobs', 'error');
+          toast('تعذر الحفظ: خدمة التخزين (Netlify Blobs) غير مفعّلة بعد — فعّل Blobs في إعدادات الموقع، أو أضف NETLIFY_BLOBS_SITE_ID و NETLIFY_BLOBS_TOKEN (أو BLOB_SITE_ID و BLOB_TOKEN) كمتغيرات بيئة', 'error');
           console.error('[admin] save failed: Netlify Blobs not configured', saveMsg);
         } else {
           toast(err.message || 'فشل الحفظ', 'error');

@@ -44,26 +44,59 @@ function matchesMagicBytes(mimeType, buffer) {
   }
 }
 
+/* --- Decode the raw request body into a Buffer ---
+   Netlify delivers multipart (binary) bodies base64-encoded with
+   event.isBase64Encoded = true. We must decode before parsing, and
+   parse on a Buffer so binary file bytes survive intact. */
+function toBodyBuffer(body, isBase64Encoded) {
+  if (body == null) return Buffer.alloc(0);
+  if (isBase64Encoded) {
+    try {
+      return Buffer.from(body, 'base64');
+    } catch {
+      return Buffer.alloc(0);
+    }
+  }
+  return Buffer.from(body, 'utf8');
+}
+
 /* --- Parse multipart form-data (lightweight, no external deps) --- */
-function parseMultipart(body, contentType) {
+function parseMultipart(bodyBuffer, contentType) {
   const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
   if (!boundaryMatch) return { fields: {}, files: [] };
-  const boundary = (boundaryMatch[1] || boundaryMatch[2]).trim();
+  const boundary = Buffer.from('--' + (boundaryMatch[1] || boundaryMatch[2]).trim());
 
-  const parts = body.split('--' + boundary);
   const fields = {};
   const files = [];
 
-  for (const part of parts) {
-    if (!part) continue;
+  // Collect every delimiter position (the closing `--B--` is matched by its
+  // `--B` prefix and simply terminates the stream).
+  const delimiters = [];
+  let pos = 0;
+  while ((pos = bodyBuffer.indexOf(boundary, pos)) !== -1) {
+    delimiters.push(pos);
+    pos += boundary.length;
+  }
+
+  // Each part sits between two consecutive delimiters.
+  for (let i = 0; i + 1 < delimiters.length; i++) {
+    let part = bodyBuffer.slice(delimiters[i] + boundary.length, delimiters[i + 1]);
+
+    // Strip the CRLF that precedes the next boundary.
+    if (part.length >= 2 && part[part.length - 1] === 0x0a && part[part.length - 2] === 0x0d) {
+      part = part.slice(0, -2);
+    }
+    // Skip the leading CRLF right after the boundary.
+    if (part.length >= 2 && part[0] === 0x0d && part[1] === 0x0a) {
+      part = part.slice(2);
+    }
+    if (part.length === 0) continue;
+
     const headerEnd = part.indexOf('\r\n\r\n');
     if (headerEnd === -1) continue;
 
-    const headersText = part.slice(0, headerEnd);
+    const headersText = part.slice(0, headerEnd).toString('latin1');
     const content = part.slice(headerEnd + 4);
-
-    let fileContent = content;
-    if (fileContent.endsWith('\r\n')) fileContent = fileContent.slice(0, -2);
 
     const contentDisposition = headersText.match(/Content-Disposition:\s*form-data;\s*name="([^"]+)"(?:;\s*filename="([^"]*)")?/i);
     const contentTypeMatch = headersText.match(/Content-Type:\s*([^\r\n]+)/i);
@@ -72,15 +105,15 @@ function parseMultipart(body, contentType) {
     const name = contentDisposition[1];
     const filename = contentDisposition[2];
 
-    if (filename) {
+    if (filename !== undefined) {
       files.push({
         field: name,
         filename,
         contentType: contentTypeMatch ? contentTypeMatch[1].trim() : 'application/octet-stream',
-        content: Buffer.from(fileContent, 'binary')
+        content
       });
     } else {
-      fields[name] = fileContent;
+      fields[name] = content.toString('utf8');
     }
   }
 
@@ -105,7 +138,8 @@ exports.handler = async (event) => {
     }
 
     const contentType = event.headers['content-type'] || event.headers['Content-Type'] || '';
-    const { fields, files } = parseMultipart(event.body, contentType);
+    const rawBody = toBodyBuffer(event.body, event.isBase64Encoded);
+    const { fields, files } = parseMultipart(rawBody, contentType);
 
     if (files.length === 0) {
       return respond(400, { error: 'No image provided', message: 'An image file is required' });
@@ -162,6 +196,16 @@ exports.handler = async (event) => {
 
   } catch (err) {
     if (err && err.statusCode) return err;
+    const errMsg = (err && err.message) || '';
+    if (/blobs|environment has not been configured/i.test(errMsg)) {
+      return respond(500, {
+        error: 'Storage unavailable',
+        message: 'Netlify Blobs is not configured on this site. Enable Netlify Blobs or set NETLIFY_BLOBS_SITE_ID and NETLIFY_BLOBS_TOKEN environment variables.'
+      });
+    }
     return respond(500, { error: 'Internal server error' });
   }
 };
+
+module.exports.parseMultipart = parseMultipart;
+module.exports.toBodyBuffer = toBodyBuffer;

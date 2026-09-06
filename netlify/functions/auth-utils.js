@@ -82,11 +82,10 @@ function hasBlobs() {
 
 function getStore(name) {
   const blobs = loadBlobs();
-  // Pass the auto-injected Netlify Blobs credentials explicitly. On the
-  // standard runtime these are provided to every function; being explicit
-  // avoids relying on SDK auto-detection.
-  const siteID = process.env.NETLIFY_BLOBS_SITE_ID;
-  const token = process.env.NETLIFY_BLOBS_TOKEN;
+  // Prefer the auto-injected Netlify Blobs credentials; also accept the
+  // explicit BLOB_SITE_ID / BLOB_TOKEN aliases so either can be configured.
+  const siteID = process.env.NETLIFY_BLOBS_SITE_ID || process.env.BLOB_SITE_ID;
+  const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.BLOB_TOKEN;
   if (siteID && token) {
     return blobs.getStore({ name, siteID, token });
   }
