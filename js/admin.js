@@ -364,6 +364,7 @@
       // revert the user to the login screen nor trigger the login error UI.
       try {
         await DataStore.load();
+        populateFormCategories();
         renderDashboard();
       } catch (loadErr) {
         console.error('[admin] catalog load failed after login (staying in dashboard):', loadErr);
@@ -577,6 +578,7 @@
   function resetProductForm() {
     editingProductId = null;
     imageData = null;
+    populateFormCategories();
     $('#productFormTitle').textContent = 'إضافة منتج جديد';
     $('#saveProductBtn').textContent = 'حفظ المنتج';
     $('#formProductId').value = '';
@@ -614,6 +616,7 @@
     $('#productFormTitle').textContent = 'تعديل منتج';
     $('#saveProductBtn').textContent = 'تحديث المنتج';
     $('#formProductId').value = productId;
+    populateFormCategories();
     $('#formNameAr').value = product.name.ar || '';
     $('#formNameEn').value = product.name.en || '';
     $('#formCategory').value = product.category || '';
@@ -764,6 +767,16 @@
       const category = $('#formCategory').value;
       const sku = $('#formSku').value.trim();
 
+      // Safe diagnostics (booleans only — never log field contents).
+      console.info('[admin] pre-save check ->', {
+        nameAr: !!nameAr,
+        nameEn: !!nameEn,
+        category: !!category,
+        sku: !!sku,
+        categoryOptions: $('#formCategory').options.length,
+        categoriesLoaded: DataStore.getCategories().length
+      });
+
       if (!nameAr || !nameEn || !category || !sku) {
         toast('يرجى ملء جميع الحقول المطلوبة', 'error');
         return;
@@ -837,7 +850,13 @@
         editingProductId = null;
         switchView('products');
       } catch (err) {
-        toast(err.message || 'فشل الحفظ', 'error');
+        const saveMsg = (err && err.message) || '';
+        if (/blobs|environment has not been configured/i.test(saveMsg)) {
+          toast('تعذر الحفظ: خدمة التخزين (Netlify Blobs) غير مفعّلة بعد — أضف متغيرات BLOB_SITE_ID و BLOB_TOKEN في إعدادات الموقع أو فعّل Blobs', 'error');
+          console.error('[admin] save failed: Netlify Blobs not configured', saveMsg);
+        } else {
+          toast(err.message || 'فشل الحفظ', 'error');
+        }
       } finally {
         saveBtn.disabled = false;
         saveBtn.textContent = originalText;
@@ -1258,9 +1277,11 @@
 
     // Load catalog in the background; a failure here must never block
     // the login screen from working.
-    DataStore.load().catch((err) => {
-      console.error('Initial catalog load failed:', err);
-    });
+    DataStore.load()
+      .then(() => populateFormCategories())
+      .catch((err) => {
+        console.error('Initial catalog load failed:', err);
+      });
 
     setupLogin();
     setupSidebar();
