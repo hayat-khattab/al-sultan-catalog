@@ -35,7 +35,7 @@ const ProductManager = (() => {
   }
 
   async function loadProducts() {
-    if (loaded) return { products, categories, ok: true };
+    if (loaded) return { products, categories, ok: !loadFailed };
 
     // Public site prefers the live catalog served by the Netlify Function
     // (Blobs-backed), so admin edits show up without re-uploading files.

@@ -83,6 +83,17 @@
         <a href="index.html" class="btn btn--accent btn--lg" data-i18n="back_to_catalog">العودة إلى الكتالوج</a>
       </div>
 
+      <!-- Error -->
+      <div class="product-page__notfound" id="productError" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
+        <h1 class="product-page__notfound-title" data-i18n="product_error">تعذر تحميل المنتج</h1>
+        <p data-i18n="product_error_msg">حدث خطأ أثناء تحميل بيانات المنتج. يرجى المحاولة مرة أخرى.</p>
+        <div class="product-page__error-actions">
+          <button type="button" class="btn btn--accent btn--lg" id="retryProductLoad" data-i18n="retry">إعادة المحاولة</button>
+          <a href="index.html" class="btn btn--ghost btn--lg" data-i18n="back_to_catalog">العودة إلى الكتالوج</a>
+        </div>
+      </div>
+
       <!-- Product Content -->
       <article class="product-detail" id="productDetail" hidden>
         <nav class="product-detail__breadcrumb" aria-label="Breadcrumb">

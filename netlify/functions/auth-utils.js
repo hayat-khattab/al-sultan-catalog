@@ -100,8 +100,13 @@ function getStore(name, event = null) {
   // for environments without the auto-provisioned context.
   const siteID = process.env.NETLIFY_BLOBS_SITE_ID || process.env.BLOB_SITE_ID;
   const token = process.env.NETLIFY_BLOBS_TOKEN || process.env.BLOB_TOKEN;
+  // Optional Blobs API endpoint override (e.g. the local BlobsServer used by
+  // the integration tests). Never set in production/netlify.toml.
+  const edgeURL = process.env.NETLIFY_BLOBS_API_URL || process.env.BLOB_API_URL || null;
   if (siteID && token) {
-    return blobs.getStore({ name, siteID, token });
+    const options = { name, siteID, token };
+    if (edgeURL) options.edgeURL = edgeURL;
+    return blobs.getStore(options);
   }
   if (siteID) {
     return blobs.getStore({ name, siteID });

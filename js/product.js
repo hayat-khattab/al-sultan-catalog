@@ -27,6 +27,9 @@
       product_loading: 'جاري تحميل المنتج...',
       product_notfound: 'المنتج غير موجود',
       product_notfound_msg: 'عذراً، لم يتم العثور على المنتج المطلوب.',
+      product_error: 'تعذر تحميل المنتج',
+      product_error_msg: 'حدث خطأ أثناء تحميل بيانات المنتج. يرجى المحاولة مرة أخرى.',
+      retry: 'إعادة المحاولة',
       back_to_catalog: 'العودة إلى الكتالوج',
       skip_to_content: 'تخطي إلى المحتوى',
       nav_home: 'الرئيسية',
@@ -55,6 +58,9 @@
       product_loading: 'Loading product...',
       product_notfound: 'Product Not Found',
       product_notfound_msg: 'Sorry, the requested product could not be found.',
+      product_error: 'Could Not Load Product',
+      product_error_msg: 'There was an error loading the product data. Please try again.',
+      retry: 'Retry',
       back_to_catalog: 'Back to Catalog',
       skip_to_content: 'Skip to content',
       nav_home: 'Home',
@@ -80,6 +86,7 @@
     setupThemeToggle();
     setupShare();
     setupWhatsAppFloat();
+    setupRetry();
 
     const id = getParam('id');
     if (!id) {
@@ -87,9 +94,14 @@
       return;
     }
 
-    await ProductManager.loadProducts();
-    currentProduct = ProductManager.getProductById(id);
+    showLoading();
+    const result = await ProductManager.loadProducts();
+    if (!result.ok) {
+      showError();
+      return;
+    }
 
+    currentProduct = ProductManager.getProductById(id);
     if (!currentProduct) {
       showNotFound();
       return;
@@ -97,6 +109,11 @@
 
     renderProduct(currentProduct);
     updateSEO(currentProduct);
+  }
+
+  function setupRetry() {
+    const btn = document.getElementById('retryProductLoad');
+    if (btn) btn.addEventListener('click', () => window.location.reload());
   }
 
   function getParam(name) {
@@ -244,27 +261,38 @@
     shareOpener = null;
   }
 
-  /* --- Loading / Not-found --- */
+  /* --- Loading / Not-found / Error ---
+     Exactly one view state is visible at a time (loading, notfound,
+     error, or detail). renderProduct is the only place that shows detail. */
+  function setProductViewState(state) {
+    const loading = document.getElementById('productLoading');
+    const notFound = document.getElementById('productNotFound');
+    const error = document.getElementById('productError');
+    const detail = document.getElementById('productDetail');
+    loading.hidden = state !== 'loading';
+    notFound.hidden = state !== 'notfound';
+    error.hidden = state !== 'error';
+    detail.hidden = state !== 'detail';
+  }
+
   function showLoading() {
-    document.getElementById('productLoading').hidden = false;
+    setProductViewState('loading');
   }
 
   function showNotFound() {
-    document.getElementById('productLoading').hidden = true;
-    document.getElementById('productDetail').hidden = true;
-    document.getElementById('productNotFound').hidden = false;
-
+    setProductViewState('notfound');
     if (currentLang !== 'ar') {
       document.documentElement.dir = 'ltr';
     }
   }
 
+  function showError() {
+    setProductViewState('error');
+  }
+
   /* --- Render --- */
   function renderProduct(product) {
-    document.getElementById('productLoading').hidden = true;
-    document.getElementById('productNotFound').hidden = true;
-    const detail = document.getElementById('productDetail');
-    detail.hidden = false;
+    setProductViewState('detail');
 
     const name = ProductManager.getLocalizedText(product.name);
     const desc = ProductManager.getLocalizedText(product.description);
@@ -281,10 +309,22 @@
     // Media
     if (product.image) {
       const img = document.getElementById('detailImage');
+      const placeholder = document.getElementById('detailImagePlaceholder');
+
+      // Only replace the valid image with the placeholder if it fails to load.
+      img.alt = name;
+      img.onerror = function () {
+        console.error('[product] image failed to load:', img.getAttribute('src'));
+        img.hidden = true;
+        placeholder.hidden = false;
+      };
+      img.onload = function () {
+        img.hidden = false;
+        placeholder.hidden = true;
+      };
       img.src = product.image;
       img.hidden = false;
-      document.getElementById('detailImagePlaceholder').hidden = true;
-      img.alt = name;
+      placeholder.hidden = true;
     } else {
       document.getElementById('detailImage').hidden = true;
       document.getElementById('detailImagePlaceholder').hidden = false;
@@ -304,6 +344,7 @@
     const warranty = ProductManager.getLocalizedText(product.warranty);
     const afterSales = ProductManager.getLocalizedText(product.afterSales);
     document.getElementById('detailWarranty').textContent = warranty;
+    document.getElementById('detailAfterSales').textContent = afterSales;
     document.getElementById('afterSalesRow').hidden = !afterSales;
     if (!warranty) document.getElementById('warrantyRow').hidden = true;
     else document.getElementById('warrantyRow').hidden = false;

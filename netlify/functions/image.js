@@ -9,6 +9,45 @@
 
 const { corsHeaders, imageGet } = require('./auth-utils');
 
+/* --- Read the `name` query parameter robustly ---
+   Netlify exposes parsed params on event.queryStringParameters; fall back to
+   parsing event.rawQuery manually when that is unavailable. */
+function getImageName(event) {
+  const parsed = event.queryStringParameters;
+  if (parsed && typeof parsed.name === 'string' && parsed.name) {
+    return parsed.name;
+  }
+  if (event.rawQuery) {
+    const params = new URLSearchParams(event.rawQuery.split('?').pop());
+    const name = params.get('name');
+    if (typeof name === 'string' && name) return name;
+  }
+  return null;
+}
+
+/* --- Convert blob data to base64 for the AWS-style gateway.
+   Netlify Blobs `type: 'blob'` reads resolve to a WHATWG Blob; handle every
+   value shape the store can return so valid images never fall through to
+   "Unexpected image data". */
+async function dataToBase64(data) {
+  if (typeof Buffer !== 'undefined' && Buffer.isBuffer(data)) {
+    return data.toString('base64');
+  }
+  if (data instanceof ArrayBuffer) {
+    return Buffer.from(data).toString('base64');
+  }
+  if (ArrayBuffer.isView(data)) {
+    return Buffer.from(data.buffer, data.byteOffset, data.byteLength).toString('base64');
+  }
+  if (typeof Blob !== 'undefined' && data instanceof Blob) {
+    return Buffer.from(await data.arrayBuffer()).toString('base64');
+  }
+  if (data && typeof data.arrayBuffer === 'function') {
+    return Buffer.from(await data.arrayBuffer()).toString('base64');
+  }
+  throw new Error('Unexpected image data: ' + Object.prototype.toString.call(data));
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: corsHeaders(), body: '' };
@@ -23,8 +62,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const params = new URLSearchParams((event.rawQuery || '').split('?').pop());
-    const name = params.get('name');
+    const name = getImageName(event);
     if (!name) {
       return { statusCode: 400, headers: corsHeaders(), body: 'name parameter is required' };
     }
@@ -42,24 +80,9 @@ exports.handler = async (event) => {
     const data = entry.data;
     const contentType = (entry.metadata && entry.metadata.contentType) || 'image/jpeg';
 
-    // Convert Blob/ArrayBuffer to base64 string for the AWS-style gateway.
-    let base64;
-    if (typeof Buffer !== 'undefined') {
-      if (Buffer.isBuffer(data)) {
-        base64 = data.toString('base64');
-      } else if (data instanceof ArrayBuffer) {
-        base64 = Buffer.from(data).toString('base64');
-      } else if (ArrayBuffer.isView(data)) {
-        base64 = Buffer.from(data.buffer, data.byteOffset, data.byteLength).toString('base64');
-      } else {
-        return { statusCode: 500, headers: corsHeaders(), body: 'Unexpected image data' };
-      }
-    } else {
-      const bytes = new Uint8Array(data);
-      let bin = '';
-      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-      base64 = Buffer.from(bin, 'binary').toString('base64');
-    }
+    // Blob values are converted via await data.arrayBuffer() (never treated
+    // as an invalid/unexpected value).
+    const base64 = await dataToBase64(data);
 
     return {
       statusCode: 200,

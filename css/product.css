@@ -46,6 +46,26 @@
   color: var(--text-primary);
 }
 
+.product-page__error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.product-page__error-actions .btn--ghost {
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.product-page__error-actions .btn--ghost:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* --- Breadcrumb --- */
 .product-detail__breadcrumb {
   display: flex;
