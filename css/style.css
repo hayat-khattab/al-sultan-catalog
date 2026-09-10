@@ -1967,3 +1967,6 @@ input, select, textarea {
     min-width: auto;
   }
 }
+
+/* --- HTML hidden attribute safety net --- */
+[hidden] { display: none !important; }
